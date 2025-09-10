@@ -1,10 +1,9 @@
-const CACHE_NAME = 'todo-parallax-v2';
+// SW v3: hard refresh via new cache name, immediate activation
+const CACHE_NAME = 'todo-parallax-v3';
 const ASSETS = [
   './',
   './index.html',
-  './styles.css?v=2',
-  './app.js?v=2',
-  './manifest.webmanifest?v=2',
+  './manifest.webmanifest',
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];
