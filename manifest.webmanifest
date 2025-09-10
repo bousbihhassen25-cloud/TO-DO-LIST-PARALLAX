@@ -1,11 +1,12 @@
 {
-  "name": "To‑Do Parallax",
+  "name": "To‑Do List Parallax",
   "short_name": "To‑Do",
-  "description": "To‑Do list avec effet parallax et thème bleu pro. Fonctionne hors‑ligne.",
-  "start_url": ".",
+  "description": "Liste de tâches simple avec priorités, effet parallaxe doux et mode hors ligne.",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#0b1420",
-  "theme_color": "#0b1420",
+  "background_color": "#0b1020",
+  "theme_color": "#0ea5e9",
+  "lang": "fr",
   "icons": [
     {
       "src": "icons/icon-192.png",

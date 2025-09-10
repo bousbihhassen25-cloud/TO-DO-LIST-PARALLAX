@@ -3,243 +3,75 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0b1420">
-  <title>To‑Do • Parallax</title>
+  <title>To‑Do List • Parallax</title>
+  <meta name="description" content="Liste de tâches simple avec priorités et effet parallaxe doux. Fonctionne hors ligne et s'installe comme une app.">
+  <meta name="theme-color" content="#0ea5e9">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon-192.png" sizes="192x192">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="To‑Do">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <style>
-    :root{
-      --bg:#0b1420; --bg-2:#0e1f31; --card:rgba(10,20,32,.72);
-      --primary:#0f4c81; --primary-600:#0b3b66;
-      --accent:#4cc2ff; --accent-2:#89d8ff; --muted:#9fb3c8;
-      --text:#e6f0ff; --text-dim:#c4d1e4; --success:#3fe3a3; --danger:#ff6b6b;
-      --shadow:0 20px 60px rgba(0,0,0,.45); --radius:18px;
-    }
-    *,*::before,*::after{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
-         color:var(--text);background:linear-gradient(180deg,var(--bg) 0%,var(--bg-2) 100%);overflow-x:hidden}
-    h1,h2{margin:0 0 .5rem}
-    button,input,select{font:inherit;color:inherit}
-
-    .parallax{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;filter:saturate(110%)}
-    .layer{position:absolute;inset:-10vh -10vw;will-change:transform}
-    .l0{background:
-        radial-gradient(1200px 800px at 10% 10%, rgba(40,98,180,.35), transparent 60%),
-        radial-gradient(900px 700px at 80% 0%, rgba(0,120,255,.25), transparent 60%),
-        radial-gradient(1000px 800px at 70% 90%, rgba(0,84,153,.22), transparent 60%);
-      filter: blur(10px)}
-    .l1{background:
-        radial-gradient(120px 120px at 20% 30%, rgba(76,194,255,.20), transparent 60%),
-        radial-gradient(160px 160px at 70% 20%, rgba(137,216,255,.18), transparent 60%),
-        radial-gradient(140px 140px at 85% 70%, rgba(76,194,255,.16), transparent 60%),
-        radial-gradient(120px 120px at 30% 80%, rgba(59,167,255,.18), transparent 60%);
-      mix-blend-mode: screen;}
-    .l2{background-image:radial-gradient(rgba(255,255,255,.08) 1px, transparent 1px);
-        background-size:3px 3px;opacity:.5}
-
-    .hero{min-height:45vh;display:grid;place-items:end center;padding:12vh 2rem 4rem}
-    .logo{display:flex;gap:.6rem;align-items:center;opacity:.95}
-    .logo .dot{width:.9rem;height:.9rem;border-radius:50%;background:var(--accent);box-shadow:0 0 16px var(--accent)}
-    .hero h1{font-weight:700;letter-spacing:.3px;font-size:clamp(1.6rem,3.2vw,2.6rem)}
-    .hero p{margin:.25rem 0 0;color:var(--text-dim)}
-
-    main{max-width:980px;margin:-6rem auto 6rem;padding:0 1rem}
-    .card{background:linear-gradient(180deg, rgba(15,26,40,.75), rgba(10,18,30,.65));
-          border:1px solid rgba(255,255,255,.08);backdrop-filter: blur(10px);
-          border-radius:var(--radius);box-shadow:var(--shadow)}
-
-    .todo{padding:1.2rem}
-    .controls{display:flex;flex-wrap:wrap;gap:.6rem}
-    .controls input[type="text"]{flex:1 1 320px;min-width:220px;padding:.8rem 1rem;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05)}
-    .controls input[type="date"], .controls select{padding:.72rem .8rem;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06)}
-    .btn{padding:.8rem 1rem;border-radius:12px;border:0;background:linear-gradient(180deg,var(--accent),var(--accent-2));
-         color:#001c2e;font-weight:700;cursor:pointer;box-shadow:0 8px 24px rgba(76,194,255,.25)}
-    .btn:active{transform:translateY(1px)}
-
-    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin:.9rem 0 0}
-    .filters{display:flex;gap:.4rem;flex-wrap:wrap}
-    .filters button{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:.45rem .7rem;border-radius:10px;cursor:pointer}
-    .filters .active{background:var(--primary);border-color:transparent}
-
-    ul.tasks{list-style:none;margin:1rem 0 0;padding:0}
-    li.task{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:.75rem;padding:.75rem;border-radius:12px;border:1px solid rgba(255,255,255,.07);background:rgba(255,255,255,.03);transition:background .2s,border-color .2s}
-    li.task + li.task{margin-top:.6rem}
-    li.task:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.15)}
-    .task input[type="checkbox"]{accent-color:var(--accent);width:1.1rem;height:1.1rem}
-    .title{font-weight:600}
-    .badges{display:flex;gap:.35rem;align-items:center}
-    .badge{font-size:.75rem;padding:.25rem .5rem;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06)}
-    .priority-Haute{background:rgba(255,107,107,.12);border-color:rgba(255,107,107,.25)}
-    .priority-Normale{background:rgba(76,194,255,.10);border-color:rgba(76,194,255,.22)}
-    .priority-Basse{background:rgba(63,227,163,.10);border-color:rgba(63,227,163,.22)}
-    .actions{display:flex;gap:.35rem}
-    .icon-btn{border:0;background:transparent;color:var(--muted);cursor:pointer;padding:.35rem;border-radius:8px}
-    .icon-btn:hover{color:var(--text)}
-    .icon-btn.danger{color:var(--danger)}
-    .stats{display:flex;justify-content:space-between;align-items:center;margin:1rem 0 0;color:var(--muted);font-size:.95rem}
-
-    @media (max-width: 640px){
-      .toolbar{flex-direction:column;align-items:stretch}
-      .stats{flex-direction:column;gap:.5rem;align-items:flex-start}
-    }
-  </style>
+  <link rel="canonical" href="./">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="parallax" aria-hidden="true">
-    <div class="layer l0" id="l0"></div>
-    <div class="layer l1" id="l1"></div>
-    <div class="layer l2" id="l2"></div>
-  </div>
-
-  <header class="hero">
-    <div class="logo">
-      <span class="dot" aria-hidden="true"></span>
-      <div>
-        <h1>To‑Do List</h1>
-        <p>Effet parallaxe doux + design pro</p>
-      </div>
+  <header class="topbar" role="banner">
+    <div class="container row between center">
+      <h1 class="title" aria-label="To‑Do List">To‑Do List</h1>
+      <button id="installBtn" class="btn primary" hidden type="button" aria-label="Installer l'application">Installer</button>
     </div>
   </header>
 
-  <main>
-    <section class="card todo" aria-labelledby="todo-title">
-      <h2 id="todo-title" style="display:none">Liste de tâches</h2>
+  <!-- Parallax hero -->
+  <section class="hero" data-parallax aria-hidden="true">
+    <div class="hero-overlay">
+      <div class="container">
+        <p class="hero-kicker">Productif & léger</p>
+        <h2 class="hero-title">Votre liste, partout—même hors ligne</h2>
+      </div>
+    </div>
+  </section>
 
-      <form id="create" class="controls" autocomplete="off">
-        <label for="task" class="sr-only">Nouvelle tâche</label>
-        <input id="task" name="task" type="text" placeholder="Ajouter une tâche…" required />
-        <select id="prio" name="prio" title="Priorité">
-          <option value="Haute">Haute</option>
-          <option value="Normale" selected>Normale</option>
-          <option value="Basse">Basse</option>
+  <main class="container">
+    <!-- Add task form -->
+    <form id="addForm" class="card add-form" autocomplete="off">
+      <div class="field">
+        <label for="todoInput">Nouvelle tâche</label>
+        <input id="todoInput" name="todo" type="text" placeholder="Ex. Acheter du lait" required minlength="1" maxlength="200" />
+      </div>
+
+      <div class="field">
+        <label for="prioritySelect">Priorité</label>
+        <select id="prioritySelect" name="priority" aria-label="Choisir la priorité">
+          <option value="haute">Haute</option>
+          <option value="normale" selected>Normale</option>
+          <option value="basse">Basse</option>
         </select>
-        <input id="due" name="due" type="date" title="Échéance" />
+      </div>
+
+      <div class="actions">
         <button class="btn" type="submit">Ajouter</button>
-      </form>
-
-      <div class="toolbar">
-        <div class="filters" role="tablist" aria-label="Filtres">
-          <button type="button" data-filter="all" class="active">Toutes</button>
-          <button type="button" data-filter="active">Actives</button>
-          <button type="button" data-filter="done">Terminées</button>
-        </div>
-        <div class="actions">
-          <button class="icon-btn" id="export" title="Exporter JSON" aria-label="Exporter">📤</button>
-          <button class="icon-btn danger" id="clearDone" title="Supprimer les terminées" aria-label="Supprimer terminées">🗑️</button>
-        </div>
       </div>
+    </form>
 
-      <ul id="list" class="tasks" aria-live="polite"></ul>
-
-      <div class="stats">
-        <span id="count">0 tâche</span>
+    <!-- Toolbar: filters + counter -->
+    <div class="toolbar card">
+      <div class="filters" role="tablist" aria-label="Filtres de tâches">
+        <button class="chip active" role="tab" aria-selected="true" data-filter="toutes" type="button">Toutes</button>
+        <button class="chip" role="tab" aria-selected="false" data-filter="actives" type="button">Actives</button>
+        <button class="chip" role="tab" aria-selected="false" data-filter="terminees" type="button">Terminées</button>
       </div>
-    </section>
+      <p id="todoCount" class="count" aria-live="polite">0 tâche</p>
+    </div>
+
+    <!-- List -->
+    <ul id="todoList" class="list" aria-label="Liste de tâches"></ul>
   </main>
 
-  <script>
-    // Service worker registration
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js'));
-    }
+  <footer class="footer">
+    <div class="container">
+      <small>Fonctionne hors ligne • Données enregistrées dans ce navigateur</small>
+    </div>
+  </footer>
 
-    // ---------- Parallax ----------
-    const layers = [
-      {el: document.getElementById('l0'), speed: .15},
-      {el: document.getElementById('l1'), speed: .30},
-      {el: document.getElementById('l2'), speed: .55},
-    ];
-    const onScroll = () => {
-      const y = window.scrollY || document.documentElement.scrollTop;
-      layers.forEach(({el, speed}) => { el.style.transform = `translateY(${y * speed * -0.25}px)`; });
-    };
-    onScroll();
-    addEventListener('scroll', () => requestAnimationFrame(onScroll), {passive:true});
-
-    // ---------- To‑Do Logic ----------
-    const STORE_KEY = 'todo.parallax.darkblue.v1';
-    const $ = sel => document.querySelector(sel);
-    const listEl = $('#list');
-    const countEl = $('#count');
-    const filterBtns = [...document.querySelectorAll('.filters button')];
-    const form = $('#create');
-
-    let tasks = load();
-    let filter = 'all';
-
-    function load(){ try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; } catch(e){ return []; } }
-    function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(tasks)); }
-
-    function addTask(title, prio, due){
-      tasks.push({ id: crypto.randomUUID(), title: title.trim(), prio, due, done:false, t:Date.now() });
-      save(); render();
-    }
-    function toggle(id){ const t = tasks.find(x => x.id === id); if(!t) return; t.done = !t.done; save(); render(); }
-    function del(id){ tasks = tasks.filter(x => x.id !== id); save(); render(); }
-    function clearDone(){ tasks = tasks.filter(x => !x.done); save(); render(); }
-    function fmtDate(d){ if(!d) return null; const dd = new Date(d + 'T00:00:00'); return dd.toLocaleDateString('fr-FR', { day:'2-digit', month:'short' }); }
-
-    function escapeHtml(s){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[c])); }
-
-    function render(){
-      const data = tasks.slice().sort((a,b)=> (a.done - b.done) || (a.t - b.t));
-      const filtered = data.filter(t => filter==='all' || (filter==='active' && !t.done) || (filter==='done' && t.done));
-      listEl.innerHTML = filtered.map(t => `
-        <li class="task" data-id="${t.id}">
-          <input type="checkbox" ${t.done?'checked':''} aria-label="Terminer" />
-          <div>
-            <div class="title" style="${t.done?'text-decoration:line-through;opacity:.7':''}">${escapeHtml(t.title)}</div>
-            <div class="badges">
-              <span class="badge priority-${t.prio}">${t.prio}</span>
-              ${t.due?`<span class="badge">Échéance : ${fmtDate(t.due)}</span>`:''}
-            </div>
-          </div>
-          <div class="actions">
-            <button class="icon-btn" title="Modifier" aria-label="Modifier">✏️</button>
-            <button class="icon-btn danger" title="Supprimer" aria-label="Supprimer">🗑️</button>
-          </div>
-        </li>`).join('');
-      countEl.textContent = `${tasks.length} ${tasks.length>1?'tâches':'tâche'}`;
-    }
-
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      const title = form.task.value.trim(); if(!title) return;
-      addTask(title, form.prio.value, form.due.value);
-      form.reset(); form.task.focus();
-    });
-    form.task.addEventListener('keydown', e => {
-      if(e.key === 'Enter' && (e.ctrlKey || !e.shiftKey)){
-        e.preventDefault(); form.querySelector('button[type="submit"]').click();
-      }
-    });
-    listEl.addEventListener('click', e => {
-      const li = e.target.closest('li.task'); if(!li) return; const id = li.dataset.id;
-      if(e.target.matches('input[type="checkbox"]')) return toggle(id);
-      if(e.target.matches('.danger')) return del(id);
-      if(e.target.textContent.trim()==='✏️'){
-        const t = tasks.find(x=>x.id===id); if(!t) return;
-        const nv = prompt('Modifier la tâche :', t.title);
-        if(nv && nv.trim()){ t.title = nv.trim(); save(); render(); }
-      }
-    });
-    document.getElementById('clearDone').addEventListener('click', clearDone);
-    document.getElementById('export').addEventListener('click', () => {
-      const blob = new Blob([JSON.stringify(tasks, null, 2)], {type:'application/json'});
-      const a = Object.assign(document.createElement('a'), {href:URL.createObjectURL(blob), download:'taches.json'});
-      a.click(); setTimeout(()=>URL.revokeObjectURL(a.href), 1000);
-    });
-    filterBtns.forEach(btn => btn.addEventListener('click', () => {
-      filterBtns.forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      filter = btn.dataset.filter; render();
-    }));
-    render();
-  </script>
+  <script src="app.js" defer></script>
 </body>
 </html>
