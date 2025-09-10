@@ -1,5 +1,5 @@
-// SW v3: hard refresh via new cache name, immediate activation
-const CACHE_NAME = 'todo-parallax-v3';
+// SW v3.1: hard refresh via new cache name, immediate activation
+const CACHE_NAME = 'todo-parallax-v3-1';
 const ASSETS = [
   './',
   './index.html',

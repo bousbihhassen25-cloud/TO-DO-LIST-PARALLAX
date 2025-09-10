@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -9,33 +10,42 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="manifest" href="manifest.webmanifest">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <style>
   :root{--bg:#0b1020;--card:#121a2e;--muted:#97a3b6;--text:#e9eef7;--primary:#0ea5e9;--ring:#38bdf8}
-  *{box-sizing:border-box} html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial}
-  .container{max-width:860px;margin:0 auto;padding:0 16px} .row{display:flex;gap:16px}.between{justify-content:space-between}.center{align-items:center}
+  *{box-sizing:border-box}
+  [hidden]{display:none !important}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial}
+  .container{max-width:860px;margin:0 auto;padding:0 16px}
+  .row{display:flex;gap:16px}.between{justify-content:space-between}.center{align-items:center}
   .topbar{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,rgba(10,15,30,.9),rgba(10,15,30,.6));backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
-  .title{margin:10px 0;font-size:22px;font-weight:700;letter-spacing:.2px} .title::before{content:none!important} h1,h2,h3,ul,ol{list-style:none;margin:0}
+  .title{margin:10px 0;font-size:22px;font-weight:700;letter-spacing:.2px}
+  .title::before{content:none!important}
+  h1,h2,h3,ul,ol{list-style:none;margin:0}
   .hero{position:relative;height:42vh;min-height:260px;background-image:linear-gradient(180deg,rgba(2,6,23,.2),rgba(2,6,23,1)),url('https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=1600&auto=format&fit=crop');background-size:cover;background-position:center;overflow:hidden}
   .hero-overlay{position:absolute;inset:0;display:flex;align-items:end;padding:32px;background:linear-gradient(180deg,rgba(2,6,23,0),rgba(2,6,23,.7) 30%,rgba(2,6,23,1))}
-  .hero-kicker{color:var(--muted);margin:0 0 6px 0} .hero-title{margin:0;font-size:28px;max-width:28ch}
+  .hero-kicker{color:var(--muted);margin:0 0 6px 0}.hero-title{margin:0;font-size:28px;max-width:28ch}
   .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:14px;box-shadow:0 6px 24px rgba(0,0,0,.24)}
   .add-form{display:grid;grid-template-columns:1fr 180px auto;gap:12px;margin-top:-56px}
   .field{display:flex;flex-direction:column;gap:6px}
   input[type="text"],select{background:#0e1530;border:1px solid rgba(255,255,255,.1);color:var(--text);padding:10px 12px;border-radius:12px;outline:none}
   input[type="text"]:focus,select:focus{border-color:var(--ring);box-shadow:0 0 0 3px rgba(56,189,248,.25)}
   .btn{appearance:none;border:1px solid rgba(255,255,255,.12);padding:10px 14px;border-radius:12px;color:var(--text);background:#0f1733;cursor:pointer}
-  .btn:hover{filter:brightness(1.1)} .btn.primary{background:var(--primary);border-color:var(--primary);color:white}
+  .btn:hover{filter:brightness(1.1)}.btn.primary{background:var(--primary);border-color:var(--primary);color:white}
   .toolbar{margin-top:16px;display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:58px;z-index:25}
-  .filters{display:flex;gap:8px;flex-wrap:wrap} .chip{border:1px solid rgba(255,255,255,.1);background:#0f1733;color:var(--text);padding:8px 12px;border-radius:999px;cursor:pointer}
-  .chip.active{outline:3px solid rgba(56,189,248,.25);border-color:var(--ring)} .count{margin:0;color:var(--muted)}
-  .list{margin:16px 0 40px;display:grid;gap:10px;padding:0} .item{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;background:#0e1530;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px}
-  .item.done{opacity:.65} .item input[type="checkbox"]{width:20px;height:20px} .item .text{margin:0;word-break:break-word} .item .text.done{text-decoration:line-through}
+  .filters{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid rgba(255,255,255,.1);background:#0f1733;color:var(--text);padding:8px 12px;border-radius:999px;cursor:pointer}
+  .chip.active{outline:3px solid rgba(56,189,248,.25);border-color:var(--ring)}
+  .count{margin:0;color:var(--muted)}
+  .list{margin:16px 0 40px;display:grid;gap:10px;padding:0}
+  .item{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;background:#0e1530;border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:10px}
+  .item.done{opacity:.65}.item input[type="checkbox"]{width:20px;height:20px}
+  .item .text{margin:0;word-break:break-word}.item .text.done{text-decoration:line-through}
   .badge{font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.1);margin-right:8px}
-  .badge.haute{border-color:rgba(239,68,68,.5);color:#fecaca} .badge.normale{border-color:rgba(56,189,248,.5);color:#bae6fd} .badge.basse{border-color:rgba(34,197,94,.5);color:#bbf7d0}
-  .actions{display:flex;gap:6px} .iconbtn{background:transparent;border:1px solid rgba(255,255,255,.12);padding:6px 10px;border-radius:10px;cursor:pointer;color:var(--muted)} .iconbtn:hover{color:var(--text)}
+  .badge.haute{border-color:rgba(239,68,68,.5);color:#fecaca}.badge.normale{border-color:rgba(56,189,248,.5);color:#bae6fd}.badge.basse{border-color:rgba(34,197,94,.5);color:#bbf7d0}
+  .actions{display:flex;gap:6px}.iconbtn{background:transparent;border:1px solid rgba(255,255,255,.12);padding:6px 10px;border-radius:10px;cursor:pointer;color:var(--muted)}
+  .iconbtn:hover{color:var(--text)}
   .footer{padding:24px 0;border-top:1px solid rgba(255,255,255,.06);color:var(--muted);text-align:center}
-  .sheet{position:fixed;inset:0;background:rgba(0,0,0,.55);display:grid;place-items:end center;padding:16px}
+  /* Sheet (dialog) */
+  .sheet{position:fixed;inset:0;background:rgba(0,0,0,.55);display:grid;place-items:end center;padding:16px;z-index:100}
   .sheet-card{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px;max-width:520px;width:min(92vw,520px);margin:0 auto 8vh}
   .sheet .muted{color:var(--muted);font-size:14px}
   @media (max-width:720px){.add-form{grid-template-columns:1fr;margin-top:-40px}.toolbar{top:56px;flex-direction:column;align-items:stretch}.filters{justify-content:flex-start}}
@@ -46,8 +56,7 @@
   <header class="topbar" role="banner">
     <div class="container row between center">
       <h1 class="title" aria-label="To-Do List">To-Do List</h1>
-      <button id="installBtn" class="btn primary" type="button" aria-label="Installer l'application"
-              onclick="document.getElementById('installSheet').hidden=false;return false;">Installer</button>
+      <button id="installBtn" class="btn primary" type="button" aria-label="Installer l'application">Installer</button>
     </div>
   </header>
 
@@ -97,8 +106,9 @@
     </div>
   </footer>
 
-  <div id="installSheet" class="sheet" hidden>
-    <div class="sheet-card">
+  <!-- Install sheet (dialog) -->
+  <div id="installSheet" class="sheet" role="dialog" aria-modal="true" hidden>
+    <div class="sheet-card" role="document">
       <h3>Installer l'app</h3>
       <p>Si le bouton système n'apparaît pas :</p>
       <ol>
@@ -107,15 +117,18 @@
         <li>Confirmez <em>Ajouter</em>.</li>
       </ol>
       <p class="muted">Sur iPhone : bouton <em>Partager</em> → <strong>Sur l'écran d'accueil</strong>.</p>
-      <button class="btn" type="button" onclick="document.getElementById('installSheet').hidden=true">Fermer</button>
+      <div class="row" style="justify-content:flex-end;gap:8px;">
+        <button id="closeSheet" class="btn" type="button">Fermer</button>
+      </div>
     </div>
   </div>
 
   <script>
   (function(){
     const KEY='todos_v1'; let todos=[]; let currentFilter='toutes'; let deferredPrompt=null;
-    const $=s=>document.querySelector(s), el=id=>document.getElementById(id);
+    const q=(s)=>document.querySelector(s), el=(id)=>document.getElementById(id);
 
+    // ---- To-do logic ----
     function load(){ try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return[]} }
     function save(){ localStorage.setItem(KEY, JSON.stringify(todos)) }
     function plural(n){ return n+' '+(n===1?'tâche':'tâches') }
@@ -146,23 +159,48 @@
     el('addForm').addEventListener('submit',e=>{ e.preventDefault(); const text=el('todoInput').value.trim(); if(!text)return; add(text,el('prioritySelect').value); e.target.reset(); el('todoInput').focus() });
     document.querySelectorAll('.filters .chip').forEach(btn=>{ btn.addEventListener('click',()=>{ document.querySelectorAll('.filters .chip').forEach(b=>{b.classList.remove('active'); b.setAttribute('aria-selected','false')}); btn.classList.add('active'); btn.setAttribute('aria-selected','true'); currentFilter=btn.dataset.filter; render(); }) });
 
-    // Parallax
-    const hero=$('[data-parallax]'); let ticking=false;
+    // ---- Parallax ----
+    const hero=q('[data-parallax]'); let ticking=false;
     function updateP(){ const y=scrollY||0; hero.style.transform='translateY('+(y*0.25)+'px)'; ticking=false }
     if(hero){ addEventListener('scroll',()=>{ if(!ticking){ requestAnimationFrame(updateP); ticking=true } }, {passive:true}) }
 
-    // Service worker
+    // ---- PWA install handling ----
+    const installBtn = el('installBtn');
+    const sheet = el('installSheet');
+    const closeBtn = el('closeSheet');
+
+    function openSheet(){ sheet.hidden=false; sheet.focus && sheet.focus(); }
+    function closeSheet(){ sheet.hidden=true; }
+
+    // Backdrop click = close
+    sheet.addEventListener('click', (e)=>{ if(e.target === sheet) closeSheet(); });
+    // Close button
+    closeBtn.addEventListener('click', closeSheet);
+    // Escape key
+    addEventListener('keydown', (e)=>{ if(!sheet.hidden && e.key === 'Escape'){ closeSheet(); } });
+
+    function isStandalone(){ return matchMedia('(display-mode: standalone)').matches || navigator.standalone===true }
+    function updateInstallVisibility(){ installBtn.style.display = isStandalone() ? 'none' : ''; }
+    updateInstallVisibility();
+
+    let promptEvent=null;
+    addEventListener('beforeinstallprompt',(e)=>{ e.preventDefault(); promptEvent=e; });
+
+    installBtn.addEventListener('click', async ()=>{
+      if(promptEvent){
+        promptEvent.prompt();
+        await promptEvent.userChoice;
+        promptEvent=null;
+      }else{
+        openSheet();
+      }
+    });
+
+    addEventListener('appinstalled', ()=>{ closeSheet(); updateInstallVisibility(); });
+
     if('serviceWorker' in navigator){
       addEventListener('load',()=>{ navigator.serviceWorker.register('./sw.js').catch(console.error) });
     }
-
-    function isStandalone(){ return matchMedia('(display-mode: standalone)').matches || navigator.standalone===true }
-    function hideInstall(){ el('installBtn').style.display='none'; el('installSheet').hidden=true }
-    function showInstall(){ if(!isStandalone()) el('installBtn').style.display='' }
-
-    showInstall();
-    addEventListener('beforeinstallprompt',e=>{ e.preventDefault(); deferredPrompt=e; el('installBtn').onclick=async function(){ try{ await deferredPrompt.prompt(); await deferredPrompt.userChoice }catch{} deferredPrompt=null; hideInstall() } });
-    addEventListener('appinstalled', hideInstall);
 
     todos=load(); render();
   })();
