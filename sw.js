@@ -1,11 +1,10 @@
-// SW v3.1: hard refresh via new cache name, immediate activation
-const CACHE_NAME = 'todo-parallax-v3-1';
+const CACHE_NAME = 'todo-parallax-v3-2';
 const ASSETS = [
-  './',
-  './index.html',
-  './manifest.webmanifest',
-  './icons/icon-192.png',
-  './icons/icon-512.png'
+  '/TO-DO-LIST-PARALLAX/',
+  '/TO-DO-LIST-PARALLAX/index.html',
+  '/TO-DO-LIST-PARALLAX/manifest.webmanifest?v=3.2',
+  '/TO-DO-LIST-PARALLAX/icons/icon-192.png',
+  '/TO-DO-LIST-PARALLAX/icons/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
@@ -38,7 +37,7 @@ self.addEventListener('fetch', (event) => {
       }
       return fresh;
     } catch (err) {
-      if (req.mode === 'navigate') return cache.match('./index.html');
+      if (req.mode === 'navigate') return cache.match('/TO-DO-LIST-PARALLAX/index.html');
       throw err;
     }
   })());
