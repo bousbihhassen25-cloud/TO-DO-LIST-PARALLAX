@@ -1,8 +1,9 @@
 {
-  "name": "To‑Do List Parallax",
-  "short_name": "To‑Do",
+  "name": "To-Do List Parallax",
+  "short_name": "To-Do",
   "description": "Liste de tâches simple avec priorités, effet parallaxe doux et mode hors ligne.",
   "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#0b1020",
   "theme_color": "#0ea5e9",

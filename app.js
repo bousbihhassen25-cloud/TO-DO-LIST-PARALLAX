@@ -1,10 +1,8 @@
-// To‑Do PWA — accessible, with localStorage, filters, parallax & install button
 const KEY = 'todos_v1';
 let todos = [];
-// Filter state: 'toutes' | 'actives' | 'terminees'
 let currentFilter = 'toutes';
+let deferredPrompt = null;
 
-// Elements
 const addForm = document.getElementById('addForm');
 const todoInput = document.getElementById('todoInput');
 const prioritySelect = document.getElementById('prioritySelect');
@@ -12,22 +10,19 @@ const todoList = document.getElementById('todoList');
 const todoCount = document.getElementById('todoCount');
 const filterButtons = Array.from(document.querySelectorAll('.filters .chip'));
 const installBtn = document.getElementById('installBtn');
+const installSheet = document.getElementById('installSheet');
+const closeSheet = document.getElementById('closeSheet');
 
-// ---------- Storage ----------
 function load(){ try { return JSON.parse(localStorage.getItem(KEY) || '[]'); } catch { return []; } }
 function save(){ localStorage.setItem(KEY, JSON.stringify(todos)); }
 
-// ---------- Utils ----------
-function pluralize(n){
-  return n + ' ' + (n === 1 ? 'tâche' : 'tâches');
-}
+function pluralize(n){ return n + ' ' + (n === 1 ? 'tâche' : 'tâches'); }
 function byFilter(list, filter){
   if(filter === 'actives') return list.filter(t => !t.done);
   if(filter === 'terminees') return list.filter(t => t.done);
   return list;
 }
 
-// ---------- Render ----------
 function render(){
   const filtered = byFilter(todos, currentFilter);
   todoList.innerHTML = '';
@@ -81,7 +76,6 @@ function render(){
   todoCount.textContent = pluralize(remaining);
 }
 
-// ---------- CRUD ----------
 function addTodo(text, priority='normale'){
   const t = { id: crypto.randomUUID(), text: text.trim(), priority, done:false, createdAt: Date.now() };
   todos = [t, ...todos];
@@ -105,10 +99,7 @@ function inlineEdit(id, pEl){
   input.className = 'text';
   pEl.replaceWith(input);
   input.focus();
-  const confirm = () => {
-    t.text = input.value.trim() || t.text;
-    save(); render();
-  };
+  const confirm = () => { t.text = input.value.trim() || t.text; save(); render(); };
   input.addEventListener('blur', confirm, { once:true });
   input.addEventListener('keydown', (e)=>{
     if(e.key === 'Enter') { e.preventDefault(); input.blur(); }
@@ -116,7 +107,6 @@ function inlineEdit(id, pEl){
   });
 }
 
-// ---------- Events ----------
 addForm.addEventListener('submit', (e)=>{
   e.preventDefault();
   const text = todoInput.value.trim();
@@ -135,12 +125,10 @@ filterButtons.forEach(btn => {
   });
 });
 
-// ---------- Parallax (with rAF + passive) ----------
 const hero = document.querySelector('[data-parallax]');
 let ticking = false;
 function updateParallax(){
   const y = window.scrollY || 0;
-  // Move overlay content slightly for depth
   hero.style.transform = `translateY(${y * 0.25}px)`;
   ticking = false;
 }
@@ -150,29 +138,52 @@ if(hero){
   }, { passive: true });
 }
 
-// ---------- PWA: Service Worker ----------
+// SW with cache-busting
 if('serviceWorker' in navigator){
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(console.error);
+    navigator.serviceWorker.register('./sw.js?v=2').catch(console.error);
   });
 }
 
-// ---------- PWA: Install button ----------
-let deferredPrompt = null;
+// Install flow
+let canPrompt = false;
+function isStandalone(){
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+function hideInstall(){
+  installBtn.style.display = 'none';
+  installSheet.hidden = true;
+}
+function showInstall(){
+  if(!isStandalone()) installBtn.style.display = '';
+}
+
+// Always try to show install; if BIP doesn't fire we show manual sheet
+showInstall();
+
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  installBtn.hidden = false;
+  canPrompt = true;
+  showInstall();
 });
 
-installBtn?.addEventListener('click', async () => {
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  const { outcome } = await deferredPrompt.userChoice;
-  deferredPrompt = null;
-  installBtn.hidden = true;
+window.addEventListener('appinstalled', () => {
+  hideInstall();
 });
 
-// ---------- Init ----------
+installBtn.addEventListener('click', async () => {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+  } else {
+    installSheet.hidden = false;
+  }
+});
+
+closeSheet?.addEventListener('click', () => { installSheet.hidden = true; });
+
+// Init
 todos = load();
 render();

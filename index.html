@@ -3,20 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>To‑Do List • Parallax</title>
+  <title>To-Do List • Parallax</title>
   <meta name="description" content="Liste de tâches simple avec priorités et effet parallaxe doux. Fonctionne hors ligne et s'installe comme une app.">
   <meta name="theme-color" content="#0ea5e9">
-  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.webmanifest?v=2">
   <link rel="icon" href="icons/icon-192.png" sizes="192x192">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="canonical" href="./">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body>
   <header class="topbar" role="banner">
     <div class="container row between center">
-      <h1 class="title" aria-label="To‑Do List">To‑Do List</h1>
-      <button id="installBtn" class="btn primary" hidden type="button" aria-label="Installer l'application">Installer</button>
+      <h1 class="title" aria-label="To-Do List">To-Do List</h1>
+      <!-- Always visible; JS hides it if already installed -->
+      <button id="installBtn" class="btn primary" type="button" aria-label="Installer l'application">Installer</button>
     </div>
   </header>
 
@@ -72,6 +74,21 @@
     </div>
   </footer>
 
-  <script src="app.js" defer></script>
+  <!-- Install fallback sheet -->
+  <div id="installSheet" class="sheet" hidden>
+    <div class="sheet-card">
+      <h3>Installer l'app</h3>
+      <p>Si le bouton système n'apparaît pas :</p>
+      <ol>
+        <li>Ouvrez le menu du navigateur (⋮).</li>
+        <li>Choisissez <strong>Ajouter à l'écran d'accueil</strong>.</li>
+        <li>Confirmez <em>Ajouter</em>.</li>
+      </ol>
+      <p class="muted">Sur iPhone : bouton <em>Partager</em> → <strong>Sur l'écran d'accueil</strong>.</p>
+      <button id="closeSheet" class="btn" type="button">Fermer</button>
+    </div>
+  </div>
+
+  <script src="app.js?v=2" defer></script>
 </body>
 </html>
